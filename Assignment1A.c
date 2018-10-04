@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <math.h>
-#include <stdlib.h>       
+#include <stdlib.h>   
+#include <sys/stat.h>    
+#include <string.h>
 
 static int generateTextLength();
 static int generateLengths();
@@ -15,9 +17,17 @@ int main(int argc) {
 	char *patternCharacters[26] = {0};
 	double textLength, patternLength;
 	double randomNumber;
+	int folderCounter = 10;
 
 
-	generateTextLength(characters, product, textLength, patternLength);
+
+FILE *fp;
+	mkdir("inputs", 0777);
+	fp=fopen("inputs/sample.txt", "w+");
+	fprintf(fp, "Hello World!!!");
+
+
+	generateTextLength(characters, patternCharacters, product, textLength, patternLength, folderCounter);
 
 
    return 0;
@@ -25,7 +35,7 @@ int main(int argc) {
 
 
 int generateTextLength(char* characters, char* patternCharacters, double product, double textLength,
- double patternLength) {
+ double patternLength, int folderCounter) {
 
 	textLength = product;
 	patternLength = 1;
@@ -33,8 +43,8 @@ int generateTextLength(char* characters, char* patternCharacters, double product
     printf("\nTEXT LENGTH: %f PATTERN LENGTH: %f\n", textLength, patternLength);
 
     generateTextData(characters, patternCharacters, textLength, patternLength);
-    printToFile(characters, patternCharacters, textLength, patternLength);
-   // generateLengths(characters, textLength, patternLength);
+    printToFile(characters, patternCharacters, textLength, patternLength, folderCounter);
+    generateLengths(characters, textLength, patternLength);
 	return 0;
 }
 
@@ -99,17 +109,35 @@ printf("\nNEW: \nTExt: ");
 	return 0;
 }
 
-int printToFile(char* characters, char* patternCharacters, double textLength, double patternLength) {
-	FILE *file;
+int printToFile(char* characters, char* patternCharacters, double textLength, double patternLength, int folderCounter) {
+	//FILE *textFile;
+	//sFILE *patternFile;
 
-/* open the file for writing*/
-    file = fopen ("output.txt","w");
 
-	for(int i = 0; i < textLength; i++) {
-		fprintf(file, "%c", characters[i]);
-	}
+	 char directoryName[10] = { }; //= "test"; //+ folderCounter;
+	int random = sprintf(directoryName ,"test%d", folderCounter);
+	//puts(directoryName);
+ 	//mkdir(directoryName, 777);
+	//folderCounter++;
+//directoryName = "test";
+	printf("%s\n", directoryName);
+//open the file for writing
+    //textFile = fopen (directoryName + "/text.txt","w");
+   // sprintf(directoryName, "%s\\my_log.txt", directoryName);
+// 	patternFile = fopen ("pattern.txt","w");
 
-	/* close the file*/  
-   fclose (file);
+
+// 	//print to text file
+// 	for(int i = 0; i < textLength; i++) {
+// 	//	fprintf(textFile, "%c", characters[i]);
+// 	}
+// 	//print to pattern file
+// 	for(int i = 0; i < patternLength; i++) {
+// //		fprintf(patternFile, "%c", patternCharacters[i]);
+// 	}
+
+// //close the file 
+//    fclose (textFile);
+//    fclose(patternFile);
 return 0;
 }
